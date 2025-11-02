@@ -44,7 +44,7 @@ public class PostServiceImpl implements PostService {
         return postRepository.findAll()
                 .stream()
                 .map(this::mapToResponseDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
