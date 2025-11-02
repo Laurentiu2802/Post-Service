@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("PostServiceImpl Unit Tests")
-public class PostServiceImplTest {
+class PostServiceImplTest {
 
     @Mock
     private PostRepository postRepository;
