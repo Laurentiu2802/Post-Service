@@ -9,9 +9,8 @@ import org.example.persistance.PostRepository;
 import org.example.persistance.entity.PostEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Slf4j
 @Service
@@ -38,13 +37,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponseDto> getAllPosts() {
-        log.info("Fetching all posts");
+    public Page<PostResponseDto> getAllPosts(Pageable pageable) {
+        log.info("Fetching all posts - page: {}, size: {}", pageable.getPageNumber(), pageable.getPageSize());
 
-        return postRepository.findAll()
-                .stream()
-                .map(this::mapToResponseDto)
-                .toList();
+        return postRepository.findAll(pageable)
+                .map(this::mapToResponseDto);
     }
 
     @Override

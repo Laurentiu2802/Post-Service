@@ -6,6 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.business.PostService;
 import org.example.business.dto.postDTO.PostRequestDto;
 import org.example.business.dto.postDTO.PostResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,11 +38,16 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponseDto>> getAllPosts() {
-        log.info("Get all posts request");
+    public ResponseEntity<List<PostResponseDto>> getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "100") int size
+    ) {
+        log.info("Get all posts request - page: {}, size: {}", page, size);
 
-        List<PostResponseDto> posts = postService.getAllPosts();
-        return ResponseEntity.ok(posts);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<PostResponseDto> postsPage = postService.getAllPosts(pageable);
+
+        return ResponseEntity.ok(postsPage.getContent());
     }
 
     @DeleteMapping("/{postId}")
