@@ -1,6 +1,8 @@
 package org.example.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.business.PostService;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/posts")
 @AllArgsConstructor
+@Validated  // <-- ADD THIS FOR @RequestParam VALIDATION
 public class PostController {
 
     private final PostService postService;
@@ -39,8 +43,8 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> getAllPosts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "100") int size
+            @RequestParam(defaultValue = "0") @Min(0) int page,  // <-- ADD @Min
+            @RequestParam(defaultValue = "100") @Min(1) @Max(500) int size  // <-- ADD @Min @Max
     ) {
         log.info("Get all posts request - page: {}, size: {}", page, size);
 
