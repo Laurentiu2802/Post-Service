@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.business.PostService;
 import org.example.business.dto.postDTO.PostRequestDto;
 import org.example.business.dto.postDTO.PostResponseDto;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/posts")
 @AllArgsConstructor
+@Profile("!cloud")
 @Validated  // <-- ADD THIS FOR @RequestParam VALIDATION
 public class PostController {
 
